@@ -3,31 +3,31 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends React.Component {
+  state = { counter: 0 }
+
+  incrementCounter = () => {
+  	this.setState((prevState) => (
+      {
+        counter: prevState.counter + 1
+      }));
+  };
+
   render(){
     return (
       <div>
-        <Button />
-        <Result />
+        <Button onClickFunction={this.incrementCounter} />
+        <Result total={this.state.counter} />
       </div>
     );
   }
 }
 
 class Button extends React.Component {
-	state = { counter: 0 }
-  
-  handleClick = () => {
-  	this.setState((prevState) => (
-      {
-        counter: prevState.counter + 1
-      }
-    ));
-  };
-  
+	  
   render(){
     return (
-      <button onClick={this.handleClick}>
-        {this.state.counter}
+      <button onClick={this.props.onClickFunction}>
+        +1
       </button>
     );
   }
@@ -35,7 +35,7 @@ class Button extends React.Component {
 
 const Result = (props) => {
   return (
-    <div>...</div>
+    <div>{props.total}</div>
   );
 };
 
