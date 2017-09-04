@@ -5,7 +5,6 @@ import './App.css';
 class App extends React.Component {
   state = { cards: [] };
   addNewCard = (cardInfo) => {
-    cardInfo.key = this.state.cards.length + 1;
     this.setState((prevState) => ({
       cards: prevState.cards.concat(cardInfo)
     }));
@@ -24,7 +23,7 @@ const CardList = (props) => {
   return (
     <div>
       <div>
-        {props.cards.map(card => <Card {...card} />)}
+        {props.cards.map(card => <Card key={card.id} {...card} />)}
       </div>
     </div>
   );
@@ -34,11 +33,12 @@ const Card = (props) => {
   return (
     <div style={{margin: '1em'}}>
       <img width="75" src={props.avatar_url} />
-      <div style={{display: 'inline-block', marginLeft: 10}}>
+      <div style={{display: 'inline-block', verticalAlign: 'top', marginLeft: 10}}>
         <div style={{fontSize: '1.25em', fontWeight: 'bold'}}>
           {props.name}
         </div>
         <div>{props.company}</div>
+        <div><a href={props.html_url}>{props.html_url}</a></div>
       </div>
     </div>
   );
@@ -52,6 +52,7 @@ class Form extends React.Component {
     axios.get(`https://api.github.com/users/${this.state.username}`)
          .then(response => {
             this.props.onSubmit(response.data)
+            this.setState({ username: '' })
           });
   };
   render() {
