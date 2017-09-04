@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
+import axios, { AxiosResponse, AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import './App.css';
 
 class App extends React.Component {
-  state = {
-    cards: [
-      {
-        name: "Felipe Barbirato",
-        avatar_url: "https://avatars0.githubusercontent.com/u/3997584?v=4",
-        company:"Albelli"
-      },
-      {
-        name: "Felipe Barbirato",
-        avatar_url: "https://avatars0.githubusercontent.com/u/3997584?v=4",
-        company:"Albelli"
-      }
-    ]
-  };
+  state = { cards: [] };
+  addNewCard = (cardInfo) => {
+    cardInfo.key = this.state.cards.length + 1;
+    this.setState((prevState) => ({
+      cards: prevState.cards.concat(cardInfo)
+    }));
+  }
   render(){
     return (
       <div>
-        <Form />
+        <Form onSubmit={this.addNewCard} />
         <CardList cards={this.state.cards} />
       </div>
     );
@@ -51,10 +45,22 @@ const Card = (props) => {
 }
 
 class Form extends React.Component {
+  state = { username: ''}
+  handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Event: Form Submit', this.state.username);
+    axios.get(`https://api.github.com/users/${this.state.username}`)
+         .then(response => {
+            this.props.onSubmit(response.data)
+          });
+  };
   render() {
     return (
-      <form>
-        <input type="text" placeholder="Github username" />
+      <form onSubmit={this.handleSubmit}>
+        <input type="text"
+          value={this.state.username}
+          onChange={(event) => this.setState({ username: event.target.value })}
+          placeholder="Github username" required />
         <button type="submit">Add card</button>
       </form>
     );
