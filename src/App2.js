@@ -2,27 +2,29 @@ import React, { Component } from 'react';
 import './App.css';
 
 class App extends React.Component {
+  state = {
+    cards: [
+      {
+        name: "Felipe Barbirato",
+        avatar_url: "https://avatars0.githubusercontent.com/u/3997584?v=4",
+        company:"Albelli"
+      },
+      {
+        name: "Felipe Barbirato",
+        avatar_url: "https://avatars0.githubusercontent.com/u/3997584?v=4",
+        company:"Albelli"
+      }
+    ]
+  };
   render(){
     return (
       <div>
-        <CardList cards={data} />
+        <Form />
+        <CardList cards={this.state.cards} />
       </div>
     );
   }
 }
-
-let data = [
-  {
-    name: "Felipe Barbirato",
-    avatar_url: "https://avatars0.githubusercontent.com/u/3997584?v=4",
-    company:"Albelli"
-  },
-  {
-    name: "Felipe Barbirato",
-    avatar_url: "https://avatars0.githubusercontent.com/u/3997584?v=4",
-    company:"Albelli"
-  }
-];
 
 const CardList = (props) => {
   return (
@@ -46,6 +48,17 @@ const Card = (props) => {
       </div>
     </div>
   );
+}
+
+class Form extends React.Component {
+  render() {
+    return (
+      <form>
+        <input type="text" placeholder="Github username" />
+        <button type="submit">Add card</button>
+      </form>
+    );
+  }
 }
 
 export default App;
